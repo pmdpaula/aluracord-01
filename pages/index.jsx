@@ -1,7 +1,7 @@
 import {
   Box, Button, Text, TextField, Image,
 } from '@skynexui/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import appConfig from '../config.json';
 
@@ -25,8 +25,17 @@ function Titulo(props) {
 }
 
 function HomePage() {
-  const [username, setUsername] = useState('peas');
+  const [username, setUsername] = useState('');
   const roteamento = useRouter();
+  const [isFormEnabled, setIsFormEnabled] = useState(false);
+
+  function validForm() {
+    setIsFormEnabled(username.length > 2);
+  }
+
+  useEffect(() => {
+    validForm();
+  }, [username]);
 
   return (
     <Box
@@ -64,7 +73,10 @@ function HomePage() {
           as="form"
           onSubmit={(event) => {
             event.preventDefault();
-            roteamento.push('/chat');
+            if (isFormEnabled) {
+              console.log('clicou');
+              roteamento.push(`/chat/?username=${username}`);
+            }
           }}
           styleSheet={{
             display: 'flex',
@@ -97,6 +109,7 @@ function HomePage() {
           <Button
             type="submit"
             label="Entrar"
+            disabled={!isFormEnabled}
             fullWidth
             buttonColors={{
               contrastColor: appConfig.theme.colors.neutrals['000'],
