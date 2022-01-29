@@ -1,5 +1,3 @@
-// import { ThemeProvider } from 'styled-components';
-
 const GlobalStyle = () => (
   <style global jsx>
     {`
@@ -31,19 +29,12 @@ const GlobalStyle = () => (
   </style>
 );
 
-// const theme = {
-//   colors: {
-//     primary: '#0070f3',
-//   },
-// };
-
-const App = ({ Component, pageProps }) => (
-  <>
-    <GlobalStyle />
-    {/* <ThemeProvider theme={theme}> */}
-    <Component {...pageProps} />
-    {/* </ThemeProvider> */}
-  </>
-);
-
-export default App;
+export default function CustomApp({ Component, pageProps }) {
+  console.log('Roda em todas as páginas!');
+  return (
+    <>
+      <GlobalStyle />
+      <Component {...pageProps} />
+    </>
+  );
+}

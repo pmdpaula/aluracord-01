@@ -1,14 +1,15 @@
+/* eslint-disable react/destructuring-assignment */
 import { Box, Button, Image, Text, TextField } from '@skynexui/components';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React from 'react';
 
 import appConfig from '../config.json';
 
-const Titulo = ({ children, tag }) => {
-  const Tag = tag || 'h1';
+function Titulo(props) {
+  const Tag = props.tag || 'h1';
   return (
     <>
-      <Tag>{children}</Tag>
+      <Tag>{props.children}</Tag>
       <style jsx>
         {`
           ${Tag} {
@@ -20,21 +21,25 @@ const Titulo = ({ children, tag }) => {
       </style>
     </>
   );
-};
+}
 
-const HomePage = () => {
-  const [username, setUsername] = useState('');
+// Componente React
+// function HomePage() {
+//     // JSX
+//     return (
+//         <div>
+//             <GlobalStyle />
+//             <Titulo tag="h2">Boas vindas de volta!</Titulo>
+//             <h2>Discord - Alura Matrix</h2>
+//         </div>
+//     )
+// }
+// export default HomePage
+
+export default function PaginaInicial() {
+  // const username = 'omariosouto';
+  const [username, setUsername] = React.useState('omariosouto');
   const roteamento = useRouter();
-  const [isFormEnabled, setIsFormEnabled] = useState(false);
-
-  function validForm() {
-    setIsFormEnabled(username.length > 2);
-  }
-
-  useEffect(() => {
-    validForm();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
 
   return (
     <Box
@@ -71,12 +76,11 @@ const HomePage = () => {
         {/* Formulário */}
         <Box
           as="form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (isFormEnabled) {
-              console.log('clicou');
-              roteamento.push(`/chat/?username=${username}`);
-            }
+          onSubmit={function (infosDoEvento) {
+            infosDoEvento.preventDefault();
+            console.log('Alguém submeteu o form');
+            roteamento.push('/chat');
+            // window.location.href = '/chat';
           }}
           styleSheet={{
             display: 'flex',
@@ -98,9 +102,28 @@ const HomePage = () => {
           >
             {appConfig.name}
           </Text>
+
+          {/* <input
+                            type="text"
+                            value={username}
+                            onChange={function (event) {
+                                console.log('usuario digitou', event.target.value);
+                                // Onde ta o valor?
+                                const valor = event.target.value;
+                                // Trocar o valor da variavel
+                                // através do React e avise quem precisa
+                                setUsername(valor);
+                            }}
+                        /> */}
           <TextField
-            onChange={(event) => {
-              setUsername(event.target.value);
+            value={username}
+            onChange={function (event) {
+              console.log('usuario digitou', event.target.value);
+              // Onde ta o valor?
+              const valor = event.target.value;
+              // Trocar o valor da variavel
+              // através do React e avise quem precisa
+              setUsername(valor);
             }}
             fullWidth
             textFieldColors={{
@@ -115,7 +138,6 @@ const HomePage = () => {
           <Button
             type="submit"
             label="Entrar"
-            disabled={!isFormEnabled}
             fullWidth
             buttonColors={{
               contrastColor: appConfig.theme.colors.neutrals['000'],
@@ -166,6 +188,4 @@ const HomePage = () => {
       </Box>
     </Box>
   );
-};
-
-export default HomePage;
+}

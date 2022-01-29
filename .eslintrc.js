@@ -40,13 +40,14 @@ module.exports = {
     // 'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
     'import/extensions': ['error', 'never', { pattern: { '.svg': 'always' } }],
 
-    'react/function-component-definition': [
-      2,
-      {
-        namedComponents: 'arrow-function',
-        unnamedComponents: 'arrow-function',
-      },
-    ],
+    // 'react/function-component-definition': [
+    //   2,
+    //   {
+    //     namedComponents: 'arrow-function',
+    //     unnamedComponents: 'arrow-function',
+    //   },
+    // ],
+    'react/function-component-definition': 'off',
 
     // We will use TypeScript's types for component props instead
     'react/prop-types': 'off',
