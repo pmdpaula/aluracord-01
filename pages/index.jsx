@@ -1,8 +1,8 @@
-import {
-  Box, Button, Text, TextField, Image,
-} from '@skynexui/components';
-import { useEffect, useState } from 'react';
+/* eslint-disable react/destructuring-assignment */
+import { Box, Button, Image, Text, TextField } from '@skynexui/components';
 import { useRouter } from 'next/router';
+import React from 'react';
+
 import appConfig from '../config.json';
 
 function Titulo(props) {
@@ -12,30 +12,34 @@ function Titulo(props) {
       <Tag>{props.children}</Tag>
       <style jsx>
         {`
-            ${Tag} {
-                color: ${appConfig.theme.colors.neutrals['000']};
-                font-size: 24px;
-                font-weight: 600;
-            }
-            `}
-
+          ${Tag} {
+            color: ${appConfig.theme.colors.neutrals['000']};
+            font-size: 24px;
+            font-weight: 600;
+          }
+        `}
       </style>
     </>
   );
 }
 
-function HomePage() {
-  const [username, setUsername] = useState('');
+// Componente React
+// function HomePage() {
+//     // JSX
+//     return (
+//         <div>
+//             <GlobalStyle />
+//             <Titulo tag="h2">Boas vindas de volta!</Titulo>
+//             <h2>Discord - Alura Matrix</h2>
+//         </div>
+//     )
+// }
+// export default HomePage
+
+export default function PaginaInicial() {
+  // const username = 'omariosouto';
+  const [username, setUsername] = React.useState('omariosouto');
   const roteamento = useRouter();
-  const [isFormEnabled, setIsFormEnabled] = useState(false);
-
-  function validForm() {
-    setIsFormEnabled(username.length > 2);
-  }
-
-  useEffect(() => {
-    validForm();
-  }, [username]);
 
   return (
     <Box
@@ -44,7 +48,8 @@ function HomePage() {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: appConfig.theme.colors.primary[500],
-        backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
+        backgroundImage:
+          'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundBlendMode: 'multiply',
@@ -71,12 +76,11 @@ function HomePage() {
         {/* Formulário */}
         <Box
           as="form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (isFormEnabled) {
-              console.log('clicou');
-              roteamento.push(`/chat/?username=${username}`);
-            }
+          onSubmit={function (infosDoEvento) {
+            infosDoEvento.preventDefault();
+            console.log('Alguém submeteu o form');
+            roteamento.push('/chat');
+            // window.location.href = '/chat';
           }}
           styleSheet={{
             display: 'flex',
@@ -89,12 +93,37 @@ function HomePage() {
           }}
         >
           <Titulo tag="h2">Boas vindas de volta!</Titulo>
-          <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
+          <Text
+            variant="body3"
+            styleSheet={{
+              marginBottom: '32px',
+              color: appConfig.theme.colors.neutrals[300],
+            }}
+          >
             {appConfig.name}
           </Text>
+
+          {/* <input
+                            type="text"
+                            value={username}
+                            onChange={function (event) {
+                                console.log('usuario digitou', event.target.value);
+                                // Onde ta o valor?
+                                const valor = event.target.value;
+                                // Trocar o valor da variavel
+                                // através do React e avise quem precisa
+                                setUsername(valor);
+                            }}
+                        /> */}
           <TextField
-            onChange={(event) => {
-              setUsername(event.target.value);
+            value={username}
+            onChange={function (event) {
+              console.log('usuario digitou', event.target.value);
+              // Onde ta o valor?
+              const valor = event.target.value;
+              // Trocar o valor da variavel
+              // através do React e avise quem precisa
+              setUsername(valor);
             }}
             fullWidth
             textFieldColors={{
@@ -109,7 +138,6 @@ function HomePage() {
           <Button
             type="submit"
             label="Entrar"
-            disabled={!isFormEnabled}
             fullWidth
             buttonColors={{
               contrastColor: appConfig.theme.colors.neutrals['000'],
@@ -161,5 +189,3 @@ function HomePage() {
     </Box>
   );
 }
-
-export default HomePage;
