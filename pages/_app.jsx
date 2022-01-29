@@ -1,9 +1,8 @@
 // import { ThemeProvider } from 'styled-components';
 
-function GlobalStyle() {
-  return (
-    <style global jsx>
-      {`
+const GlobalStyle = () => (
+  <style global jsx>
+    {`
       * {
         margin: 0;
         padding: 0;
@@ -13,8 +12,10 @@ function GlobalStyle() {
       body {
         font-family: 'Open Sans', sans-serif;
       }
-      /* App fit Height */ 
-      html, body, #__next {
+      /* App fit Height */
+      html,
+      body,
+      #__next {
         min-height: 100vh;
         display: flex;
         flex: 1;
@@ -25,12 +26,10 @@ function GlobalStyle() {
       #__next > * {
         flex: 1;
       }
-      /* ./App fit Height */ 
+      /* ./App fit Height */
     `}
-
-    </style>
-  );
-}
+  </style>
+);
 
 // const theme = {
 //   colors: {
@@ -38,13 +37,13 @@ function GlobalStyle() {
 //   },
 // };
 
-export default function App({ Component, pageProps }) {
-  return (
-    <>
-      <GlobalStyle />
-      {/* <ThemeProvider theme={theme}> */}
-      <Component {...pageProps} />
-      {/* </ThemeProvider> */}
-    </>
-  );
-}
+const App = ({ Component, pageProps }) => (
+  <>
+    <GlobalStyle />
+    {/* <ThemeProvider theme={theme}> */}
+    <Component {...pageProps} />
+    {/* </ThemeProvider> */}
+  </>
+);
+
+export default App;

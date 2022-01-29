@@ -1,30 +1,28 @@
-import {
-  Box, Button, Text, TextField, Image,
-} from '@skynexui/components';
-import { useEffect, useState } from 'react';
+import { Box, Button, Image, Text, TextField } from '@skynexui/components';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
 import appConfig from '../config.json';
 
-function Titulo(props) {
-  const Tag = props.tag || 'h1';
+const Titulo = ({ children, tag }) => {
+  const Tag = tag || 'h1';
   return (
     <>
-      <Tag>{props.children}</Tag>
+      <Tag>{children}</Tag>
       <style jsx>
         {`
-            ${Tag} {
-                color: ${appConfig.theme.colors.neutrals['000']};
-                font-size: 24px;
-                font-weight: 600;
-            }
-            `}
-
+          ${Tag} {
+            color: ${appConfig.theme.colors.neutrals['000']};
+            font-size: 24px;
+            font-weight: 600;
+          }
+        `}
       </style>
     </>
   );
-}
+};
 
-function HomePage() {
+const HomePage = () => {
   const [username, setUsername] = useState('');
   const roteamento = useRouter();
   const [isFormEnabled, setIsFormEnabled] = useState(false);
@@ -35,6 +33,7 @@ function HomePage() {
 
   useEffect(() => {
     validForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
   return (
@@ -44,7 +43,8 @@ function HomePage() {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: appConfig.theme.colors.primary[500],
-        backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
+        backgroundImage:
+          'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundBlendMode: 'multiply',
@@ -89,7 +89,13 @@ function HomePage() {
           }}
         >
           <Titulo tag="h2">Boas vindas de volta!</Titulo>
-          <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
+          <Text
+            variant="body3"
+            styleSheet={{
+              marginBottom: '32px',
+              color: appConfig.theme.colors.neutrals[300],
+            }}
+          >
             {appConfig.name}
           </Text>
           <TextField
@@ -160,6 +166,6 @@ function HomePage() {
       </Box>
     </Box>
   );
-}
+};
 
 export default HomePage;

@@ -25,6 +25,14 @@ module.exports = {
     'simple-import-sort',
   ],
   settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'src/'],
+      },
+    },
+  },
+  rules: {
     'react/jsx-filename-extension': [
       'warn',
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
@@ -63,12 +71,16 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     indent: 'off',
     // '@typescript-eslint/indent': ['error', 2], // 2 spaces === 1 tab
-    '@typescript-eslint/indent': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
+    // '@typescript-eslint/indent': 'off',
+    // '@typescript-eslint/no-explicit-any': 'off',
+    // '@typescript-eslint/no-unused-vars': 'off',
     'react/jsx-no-bind': [
       'error',
-      { allowFunctions: true, ignoreDOMComponents: true },
+      {
+        allowFunctions: true,
+        ignoreDOMComponents: true,
+        allowArrowFunctions: true,
+      },
     ],
   },
 };
