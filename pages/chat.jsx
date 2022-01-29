@@ -1,33 +1,53 @@
 /* eslint-disable react/destructuring-assignment */
 import { Box, Button, Image, Text, TextField } from '@skynexui/components';
-import React from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 import appConfig from '../config.json';
+
+// eslint-disable-next-line prettier/prettier
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQ2NzUxMCwiZXhwIjoxOTU5MDQzNTEwfQ.9wTlLUGb-aOee50difveVl8rpMg1zcQo50iDK0Ymhdg';
+const SUPABASE_URL = 'https://txnhhprfpmsybbhokqdj.supabase.co';
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function ChatPage() {
   const [mensagem, setMensagem] = React.useState('');
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
-  /*
-    // Usuário
-    - Usuário digita no campo textarea
-    - Aperta enter para enviar
-    - Tem que adicionar o texto na listagem
+  const router = useRouter();
+  const { username } = router.query;
 
-    // Dev
-    - [X] Campo criado
-    - [X] Vamos usar o onChange usa o useState (ter if pra caso seja enter pra limpar a variavel)
-    - [X] Lista de mensagens
-    */
+  useEffect(() => {
+    supabaseClient
+      .from('mensagens')
+      .select('*')
+      .order('id', { ascending: false })
+      .then(({ data }) => {
+        console.table(data);
+        setListaDeMensagens(data);
+      });
+  }, []);
+
   function handleNovaMensagem(novaMensagem) {
     // eslint-disable-next-line no-shadow
     const mensagem = {
-      id: listaDeMensagens.length + 1,
-      de: 'vanessametonini',
+      // id: listaDeMensagens.length + 1,
+      de: username,
       texto: novaMensagem,
     };
 
-    setListaDeMensagens([mensagem, ...listaDeMensagens]);
+    supabaseClient
+      .from('mensagens')
+      .insert([
+        // tem que ser um objeto com os MESMOS CAMPOS que vc escreveu no supbase
+        mensagem,
+      ])
+      .then(({ data }) => {
+        // console.log('Criando mensagem: ', oQueEstaVindo);
+        setListaDeMensagens([data[0], ...listaDeMensagens]);
+      });
+    // setListaDeMensagens([mensagem, ...listaDeMensagens]);
     setMensagem('');
   }
 
@@ -145,7 +165,7 @@ function Header() {
 }
 
 function MessageList(props) {
-  console.log(props);
+  // console.log(props);
   return (
     <Box
       tag="ul"
@@ -184,7 +204,7 @@ function MessageList(props) {
                 display: 'inline-block',
                 marginRight: '8px',
               }}
-              src="https://github.com/vanessametonini.png"
+              src={`https://github.com/${mensagem.de}.png`}
             />
             <Text tag="strong">{mensagem.de}</Text>
             <Text
